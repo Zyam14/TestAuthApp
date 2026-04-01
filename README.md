@@ -139,7 +139,7 @@ Response:
 * Python 3
 * Django
 * Django REST Framework
-* SQLite
+* PostgreSQL
 ---
 
 ## Запуск проекта
