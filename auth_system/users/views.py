@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from .models import User
 from auth_core.jwt_service import generate_token
@@ -74,12 +75,14 @@ def update_profile(request):
     return Response({"message": "Updated"})
 
 
+@csrf_exempt
 @api_view(["DELETE"])
 def delete_user(request):
-    if not request.user:
-        return Response(status=401)
-
     user = request.user
+
+    if not user or not user.is_authenticated:
+        return Response({"error": "Unauthorized"}, status=401)
+
     user.is_active = False
     user.save()
 
